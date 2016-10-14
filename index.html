@@ -1,0 +1,47 @@
+
+<html>
+<head>
+<style>
+#displayData{
+	border: 1px solid white;\
+}
+#displayData td{
+	text-align:center;
+}
+.del{
+	color:red;
+	background:grey;
+}
+body{
+	color:grey;
+	background:black;
+	font-family: "Times New Roman", Times, serif;
+}
+#title{
+	font-size:50pt;
+}
+#output{
+	border:5px solid green;
+	border-top-right-radius:10px;
+	border-bottom-left-radius:50px;
+	width:80%;
+	height:50%;
+	word-wrap: break-word;
+	overflow:auto;
+}
+</style>
+<script src='script.js' type='text/javascript'></script>
+</head>
+<body>
+<center>
+<span id='title'>Autostat</span><sub>Created By Warren Hood</sub><br>
+Enter a space seperated list of of data<br>
+<textarea id='ui'></textarea><br>
+<button id='analyse'>Capture Data</button><br>
+<table id='displayData'></table>
+Optional Percentile(Choose "calculate percentile" to use this)<input id='percentile' size=8/>
+<br>
+<h2>Output</h2><button id='outit'>Analyse Data</button><button id='percentilec'>Calculate percentile(input above)</button>
+<center><div id='output'></div></center>
+</body>
+</html>

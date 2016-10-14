@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = ""
+        xmlns:gap   = ""
+        id          = "com.nullbyte.autostat"
+        versionCode = "001" 
+        version     = "0.0.1" >
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Autostat</name>
+
+    <description>
+      
+    </description>
+
+    <author href="" email="nullbyte001@gmail.com">
+        Warren Hood
+    </author>
+ <preference name="orientation" value="portrait" />
+  <preference name="fullscreen" value="true" />
+  <splash src='splash.png' height='200' width='320'/>
+  <icon src='icon.png' height='50' width='50'/>
+</widget>
