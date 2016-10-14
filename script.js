@@ -116,12 +116,15 @@ function range(d){
 }
 function mode(d){
 	var max = 0;
+	var modes = [];
 	var m = 0;
 	for(var i = 0;i<d.length;i++)if(count(d,parseFloat(d[i])) > max){
 		max = count(d,parseFloat(d[i]));
 		m = d[i];
 	}
-	return m;
+	for(var n = 0;n<d.length;n++)if(count(d,parseFloat(d[n])) == max && count(modes,parseFloat(d[n])) == 0)modes.push(d[n]);
+	s = modes.join(' and ')
+	return s;
 }
 function compareNumbers(a, b)
 {
