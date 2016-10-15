@@ -1,11 +1,17 @@
-
 <html>
 <head>
 <style>
-#displayData{
-	border: 1px solid white;\
+#title{
+	font-size:50pt;
 }
-#displayData td{
+table{
+	border: 1px solid white;
+	cell-spacing:0;
+}
+table td{
+	margin:0;
+	padding:0;
+	border: 1px solid white;
 	text-align:center;
 }
 .del{
@@ -13,7 +19,7 @@
 	background:grey;
 }
 body{
-	color:grey;
+	color:white;
 	background:black;
 	font-family: "Times New Roman", Times, serif;
 }
@@ -35,13 +41,20 @@ body{
 <body>
 <center>
 <span id='title'>Autostat</span><sub>Created By Warren Hood</sub><br>
+Enter the intervals(Optional)<br>Use a newline(press Enter) for each class interval.<br>
+Type the lower limit followed by a space followed by the upper limit on each line.<br>
+Eg. 0 &lt; x &le;  10 is written as 0 10 on a line<br>
+<textarea id='intervals'></textarea><br><br>
 Enter a space seperated list of of data<br>
 <textarea id='ui'></textarea><br>
 <button id='analyse'>Capture Data</button><br>
-<table id='displayData'></table>
+Frequency table of raw data
+<table id='displayData'></table><br>
+Frequency table of classed(grouped) data
+<table id='displayIntervals'></table>
 Optional Percentile(Choose "calculate percentile" to use this)<input id='percentile' size=8/>
 <br>
-<h2>Output</h2><button id='outit'>Analyse Data</button><button id='percentilec'>Calculate percentile(input above)</button>
+<h2>Output</h2><button id='gout'>Analyse Grouped Data</button><button id='outit'>Analyse Data</button><button id='percentilec'>Calculate percentile(input above)</button>
 <center><div id='output'></div></center>
 </body>
 </html>
