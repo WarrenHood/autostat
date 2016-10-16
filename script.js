@@ -188,9 +188,11 @@ function updateData(){
 		for(var c = 0;c < freqOf(cd);c++)newa.push(parseInt(cd));
 	}
 	a = newa;
+	sum = 0;
+	for(var x = 0;x<a.length;x++)sum += parseInt(a[x]);
 	print('Sorted in ascending order: ','blue');
 	print(a,'blue');
-	print('Mean: '+mean(a),'green');
+	print('Mean: '+sum+' / '+ a.length+' = '+mean(a),'green');
 	print('Range: '+ range(a),'red');
 	print('Median: '+p(a,50),'yellow');
 	print('Lower-Quartile: '+p(a,25),'yellow');
