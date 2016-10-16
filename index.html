@@ -44,7 +44,12 @@ body{
 Enter the intervals(Optional)<br>Use a newline(press Enter) for each class interval.<br>
 Type the lower limit followed by a space followed by the upper limit on each line.<br>
 Eg. 0 &lt; x &le;  10 is written as 0 10 on a line<br>
-<textarea id='intervals'></textarea><br><br>
+Format: a <select id='firstS'><option value='&lt;'>&lt;</option><option value='&le;'>&le;</option></select> x <select id='secondS'><option value='&le;'>&le;</option><option value='&lt;'>&lt;</option></select> b<br>
+<textarea id='intervals'></textarea><br>
+Datatype<br>
+<input name='dt' type='radio' checked />Continuous(Fractional)<br>
+<input name='dt' type='radio'/>Discrete(Whole Numbers)<br>
+<br>
 Enter a space seperated list of of data<br>
 <textarea id='ui'></textarea><br>
 <button id='analyse'>Capture Data</button><br>

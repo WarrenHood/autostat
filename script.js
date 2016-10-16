@@ -1,4 +1,6 @@
 window.onload = function(){
+	firstSign = '&lt;';
+	secondSign = '&le;';
 	document.getElementById('analyse').onclick = handleData;
 	document.getElementById('outit').onclick = updateData;
 	g('gout').onclick = groupUpdate;
@@ -20,20 +22,39 @@ window.onload = function(){
 function g(x){
 	return document.getElementById(x);
 }
+function updateTables(){
+	var newa = [];
+	var table = g('displayData');
+	rows = table.getElementsByTagName('tr');
+	for(var row = 1;row < rows.length;row++){
+		var cd = rows[row].getElementsByTagName('td')[0].innerHTML;
+		if(cd == 'Item')continue;
+		for(var c = 0;c < freqOf(cd);c++)newa.push(parseInt(cd));
+	}
+	a = newa;
+	setMids();
+}
 function handleData(){
 	clearTable();
 	iClearTable();
 	g('displayData').innerHTML += '<tr><td>Item</td><td>Frequency</td><td>Delete Item</td></tr>';
 	g('displayIntervals').innerHTML += '<tr><td>Interval</td><td>Frequency</td><td>Class Midpoint</td><td>Frequency x Class Midpoint<td>Delete Interval</td></tr>';
 	a = g('ui').value.split(' ');
+	if(g('intervals').value.length != 0 ){
 	var intervals = g('intervals').value.replace(/\r\n/g, "\n").split("\n");
 	groups = [];
 	for(var i = 0;i<intervals.length;i++)groups.push(intervals[i].split(' ') );
 	for(gr = 0;gr<groups.length;gr++){
 		itable(groups[gr][0],groups[gr][1]);
 	}
+	for(var i = 0;i < groups.length;i++){
+		gr = groups[i];
+		setFreqX(gr.join(' '),countC(a,gr[0],gr[1]));
+		setCm(gr.join(' '));
+	}}
 	a.sort(compareNumbers);
 	seen = [];
+	if(g('ui').value.length != 0 ){
 	for(var i = 0; i < a.length;i++){
 		if(count(seen,a[i]) == 0){
 			table(a[i]);
@@ -42,9 +63,11 @@ function handleData(){
 	}
 	for(var i = 0; i < a.length;i++){
 		setFreq(a[i],count(a,a[i]));
-	}
+	}}
+}
+function setMids(){
 	for(var i = 0;i < groups.length;i++){
-		gr = groups[i]
+		gr = groups[i];
 		setFreqX(gr.join(' '),countC(a,gr[0],gr[1]));
 		setCm(gr.join(' '));
 	}
@@ -65,7 +88,7 @@ function iClearTable(){
 function table(x){
 	texty = g('displayData').innerHTML;
 	texty += '<tr id="data'+x+'">';
-	texty += '<td>'+x+'</td><td><input size=8/></td><td class="del" onclick="remove('+x+');">X</td>';
+	texty += '<td>'+x+'</td><td><input size=8 onchange="updateTables();" /></td><td class="del" onclick="remove('+x+');">X</td>';
 	texty += '</tr>';
 	g('displayData').innerHTML = texty;
 }
@@ -74,7 +97,7 @@ function itable(l,u){
 	setter = 'setCm(\''+l + ' '+u+'\');'
 	var texty = g('displayIntervals').innerHTML;
 	texty += '<tr id="Inter'+l+' '+u+'">';
-	texty += '<td>'+l+' &lt; x &le; '+u+'</td><td><input size=8/ onchange="'+setter+'"></td><td class="cm"></td><td class="freqprod"></td><td class=\'del\' onclick="'+fn+'">X</td>';
+	texty += '<td>'+l+' '+fSign()+' x '+sSign()+' '+u+'</td><td><input size=8/ onchange="'+setter+'"></td><td class="cm"></td><td class="freqprod"></td><td class=\'del\' onclick="'+fn+'">X</td>';
 	texty += '</tr>';
 	g('displayIntervals').innerHTML = texty;
 	setTimeout(function(){setCm(l+" "+ u);},1)
@@ -82,7 +105,8 @@ function itable(l,u){
 function countC(a,l,u){
 	var count = 0;
 	for(var i = 0;i<a.length;i++){
-		if(parseFloat(a[i]) > parseFloat(l) && parseFloat(a[i]) <= parseFloat(u))count++;
+		var x = a[i];
+		if(eval(eqGen(l+' '+fSign()+' x '+sSign()+ ' '+u) ))count++;
 	}
 	return count
 }
@@ -94,8 +118,14 @@ function count(a,b){
 	return count
 }
 function setCm(n){
-	g('Inter'+n).getElementsByClassName('cm')[0].innerHTML = (parseFloat(n.split(' ')[0])+parseFloat(n.split(' ')[1]))/2;
-	g('Inter'+n).getElementsByClassName('freqprod')[0].innerHTML = parseFloat(freqOfX(n))* (parseFloat(n.split(' ')[0])+parseFloat(n.split(' ')[1]))/2;
+	lower = parseFloat(n.split(' ')[0]);
+	upper = parseFloat(n.split(' ')[1]);
+	if(dataType() == 'discrete'){
+		if(fSign() == '&lt;' || fSign() == '<') lower = Math.floor(parseFloat(lower)) + 1;
+		if(sSign() == '&lt;' || sSign() == '<') upper =Math.ceil(parseFloat(upper)) - 1;
+	}
+	g('Inter'+n).getElementsByClassName('cm')[0].innerHTML = (upper + lower)/2;
+	g('Inter'+n).getElementsByClassName('freqprod')[0].innerHTML = parseFloat(freqOfX(n))* (upper+lower)/2;
 }
 function freqOf(n){
 	return g('data'+n).getElementsByTagName('input')[0].value;
@@ -174,6 +204,10 @@ function extract(n){
 	var s = [ar[0],ar[4]];
 	return s.join(' ');
 }
+function dataType(){
+	if(document.getElementsByName('dt')[0].checked)return 'continuous';
+	return 'discrete';
+}
 function groupUpdate(){
 	refreshOut();
 	var newa = [];
@@ -187,22 +221,66 @@ function groupUpdate(){
 		for(var i = 0;i < parseInt(freq);i++)newa.push(cmOf(classd));
 	}
 	var a = newa;
-	print('Mean: '+mean(a),'green');
+	sum = 0;
+	for(var x = 0;x<a.length;x++)sum += parseInt(a[x]);
+	print('Mean: '+sum+' / '+ a.length+' = '+mean(a) +' ( ' + classOf(mean(a))+' )','green');
 	print('Range: '+ range(a),'red');
-	print('Median: '+p(a,50),'yellow');
-	print('Lower-Quartile: '+p(a,25),'yellow');
-	print('Upper-Quartile: '+p(a,75),'yellow');
-	print('Inter-Quartile-Range: '+ p(a,75)+' - '+p(a,25)+' = '+ (p(a,75)-p(a,25)),'orange' );
-	print('Semi-Inter-Quartile-Range: '+ (p(a,75)-p(a,25))+'/2 = '+(p(a,75)-p(a,25))/2,'orange' ) 
+	print('Median: '+p(a,50) + ' ( '+classOf(p(a,50) )+' )','yellow');
+	print('Lower-Quartile: '+p(a,25) + ' ( '+classOf(p(a,25)) + ' )','yellow');
+	print('Upper-Quartile: '+p(a,75) + ' ( '+classOf(p(a,75)) + ' )','yellow');
+	print('Inter-Quartile-Range: '+ p(a,75)+' - '+p(a,25)+' = '+ (p(a,75)-p(a,25)) + ' ( '+classOf((p(a,75)-p(a,25)) ) +' )','orange' );
+	print('Semi-Inter-Quartile-Range: '+ (p(a,75)-p(a,25))+'/2 = '+(p(a,75)-p(a,25))/2 + ' ( '+classOf((p(a,75)-p(a,25))/2 ) + ' )','orange' ) 
 	print('Modal Class: '+ gMode(grops), 'violet' );
 }
 function cmOf(n){
 	return parseFloat(g('Inter'+n).getElementsByClassName('cm')[0].innerHTML );
 }
+function fSign(){
+	return g('firstS').value;
+}
+function sSign(){
+	return g('secondS').value;
+}
+function eqGen(str){
+	console.log(str);
+	var sa = str.split(' ');
+	var lower = sa[0];
+	var upper = sa[4];
+	s = '';
+	if(dataType() == 'discrete'){
+	if(fSign() == '&lt;' || fSign() == '<') lower = Math.floor(parseFloat(lower)) + 1;
+	if(sSign() == '&lt;' || sSign() == '<') upper = Math.ceil(parseFloat(upper)) - 1;
+	}
+	s += lower;
+	if(dataType() == 'discrete' ) s+= '<=';
+	else{
+	if(fSign() == "&lt;" || fSign() == '<')s += ' < ';
+	else s += ' <= ';
+	}
+	s += sa[2]+' && '+sa[2];
+	if(dataType() == 'discrete'){
+		s += '<=';
+	}
+	else{
+	if(sSign() == "&lt;"  || sSign() == '<')s += ' < ';
+	else s += ' <= ';}
+	s += upper;
+	console.log(' It becomes '+s);
+	return s;
+}
+function classOf(x){
+	var table = g('displayIntervals');
+	var gs = table.getElementsByTagName('tr');
+	var grops = [];
+	for(var i = 0;i<gs.length-1;i++)grops.push(gs[i+1].getElementsByTagName('td')[0].innerHTML);
+	for(var i = 0; i < grops.length;i++){
+		if(eval(eqGen(grops[i])))return grops[i];
+	}
+}
 function mean(d){
 	sum = 0;
 	for(var x = 0;x<d.length;x++)sum += parseInt(d[x]);
-	return ''+sum+' / ' + d.length + ' = ' + sum/d.length;
+	return sum/d.length;
 }
 function p(d,percent){
 	var pos = parseFloat(percent)*(1+d.length)/100 - 1;
