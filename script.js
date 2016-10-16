@@ -14,9 +14,23 @@ window.onload = function(){
 																				for(var c = 0;c < freqOf(cd);c++)newa.push(parseInt(cd));
 																			}
 																			a = newa;
-																var pr = g('percentile').value;
-																refreshOut();
-																print('P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)));
+																			var pr = g('percentile').value;
+																			refreshOut();
+																			print('P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)));
+																			if(g('intervals').value.length != 0 ){
+																			var newa = [];
+																			var table = g('displayIntervals');
+																			var gs = table.getElementsByTagName('tr');
+																			var grops = [];
+																			for(var i = 0;i<gs.length-1;i++)grops.push(gs[i+1].getElementsByTagName('td')[0].innerHTML);
+																			for(gro = 0;gro < grops.length;gro++){
+																				classd = extract(grops[gro]);
+																				freq = freqOfX(classd);
+																				for(var i = 0;i < parseInt(freq);i++)newa.push(cmOf(classd));
+																			}
+																			var a = newa;
+																			print('Class P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)) + " ( "+classOf(p(a,parseInt(pr))) +' )');
+																}
 																		}
 }
 function g(x){
