@@ -142,13 +142,13 @@ function setCm(n){
 	g('Inter'+n).getElementsByClassName('freqprod')[0].innerHTML = parseFloat(freqOfX(n))* (upper+lower)/2;
 }
 function freqOf(n){
-	return g('data'+n).getElementsByTagName('input')[0].value;
+	return parseFloat(g('data'+n).getElementsByTagName('input')[0].value);
 }
 function setFreq(n,val){
 	g('data'+n).getElementsByTagName('input')[0].value = val;
 }
 function freqOfX(n){
-	return g('Inter'+n).getElementsByTagName('input')[0].value;
+	return parseFloat(g('Inter'+n).getElementsByTagName('input')[0].value);
 }
 function setFreqX(n,val){
 	g('Inter'+n).getElementsByTagName('input')[0].value = val;
