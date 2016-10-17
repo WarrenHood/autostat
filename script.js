@@ -11,12 +11,12 @@ window.onload = function(){
 																			for(var row = 1;row < rows.length;row++){
 																				var cd = rows[row].getElementsByTagName('td')[0].innerHTML;
 																				if(cd == 'Item')continue;
-																				for(var c = 0;c < freqOf(cd);c++)newa.push(parseInt(cd));
+																				for(var c = 0;c < freqOf(cd);c++)newa.push(parseFloat(cd));
 																			}
 																			a = newa;
 																			var pr = g('percentile').value;
 																			refreshOut();
-																			if(a.length != 0)print('P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)));
+																			if(a.length != 0)print('P<sub>'+pr+'</sub>: '+p(a,parseFloat(pr)));
 																			if(groups.length != 0 ){
 																			var newa = [];
 																			var table = g('displayIntervals');
@@ -26,10 +26,10 @@ window.onload = function(){
 																			for(gro = 0;gro < grops.length;gro++){
 																				classd = extract(grops[gro]);
 																				freq = freqOfX(classd);
-																				for(var i = 0;i < parseInt(freq);i++)newa.push(cmOf(classd));
+																				for(var i = 0;i < parseFloat(freq);i++)newa.push(cmOf(classd));
 																			}
 																			var a = newa;
-																			print('Class P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)) + " ( "+classOf(p(a,parseInt(pr))) +' )');
+																			print('Class P<sub>'+pr+'</sub>: '+p(a,parseFloat(pr)) + " ( "+classOf(p(a,parseFloat(pr))) +' )');
 																}
 																		}
 }
@@ -43,7 +43,7 @@ function updateTables(){
 	for(var row = 1;row < rows.length;row++){
 		var cd = rows[row].getElementsByTagName('td')[0].innerHTML;
 		if(cd == 'Item')continue;
-		for(var c = 0;c < freqOf(cd);c++)newa.push(parseInt(cd));
+		for(var c = 0;c < freqOf(cd);c++)newa.push(parseFloat(cd));
 	}
 	a = newa;
 	setMids();
@@ -209,11 +209,11 @@ function updateData(){
 	for(var row = 1;row < rows.length;row++){
 		var cd = rows[row].getElementsByTagName('td')[0].innerHTML;
 		if(cd == 'Item')continue;
-		for(var c = 0;c < freqOf(cd);c++)newa.push(parseInt(cd));
+		for(var c = 0;c < freqOf(cd);c++)newa.push(parseFloat(cd));
 	}
 	a = newa;
 	sum = 0;
-	for(var x = 0;x<a.length;x++)sum += parseInt(a[x]);
+	for(var x = 0;x<a.length;x++)sum += parseFloat(a[x]);
 	print('Sorted in ascending order: ','blue');
 	print(a,'blue');
 	print('Mean: '+sum+' / '+ a.length+' = '+mean(a),'green');
@@ -244,11 +244,11 @@ function groupUpdate(){
 	for(gro = 0;gro < grops.length;gro++){
 		classd = extract(grops[gro]);
 		freq = freqOfX(classd);
-		for(var i = 0;i < parseInt(freq);i++)newa.push(cmOf(classd));
+		for(var i = 0;i < parseFloat(freq);i++)newa.push(cmOf(classd));
 	}
 	var a = newa;
 	sum = 0;
-	for(var x = 0;x<a.length;x++)sum += parseInt(a[x]);
+	for(var x = 0;x<a.length;x++)sum += parseFloat(a[x]);
 	print('Mean: '+sum+' / '+ a.length+' = '+mean(a) +' ( ' + classOf(mean(a))+' )','green');
 	print('Range: '+ range(a),'red');
 	print('Median: '+p(a,50) + ' ( '+classOf(p(a,50) )+' )','yellow');
@@ -305,7 +305,7 @@ function classOf(x){
 }
 function mean(d){
 	sum = 0;
-	for(var x = 0;x<d.length;x++)sum += parseInt(d[x]);
+	for(var x = 0;x<d.length;x++)sum += parseFloat(d[x]);
 	return sum/d.length;
 }
 function p(d,percent){
@@ -313,7 +313,7 @@ function p(d,percent){
 	return parseFloat(d[Math.floor(pos)] + (pos - Math.floor(pos))*(d[Math.ceil(pos)] - d[Math.floor(pos)]));
 }
 function range(d){
-	return d[d.length-1] +'-'+ d[0] + ' = '+ (parseInt(d[d.length-1]) - parseInt(d[0]));
+	return d[d.length-1] +'-'+ d[0] + ' = '+ (parseFloat(d[d.length-1]) - parseFloat(d[0]));
 }
 function gMode(d){
 	var max = 0;
