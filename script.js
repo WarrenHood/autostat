@@ -16,8 +16,8 @@ window.onload = function(){
 																			a = newa;
 																			var pr = g('percentile').value;
 																			refreshOut();
-																			print('P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)));
-																			if(g('intervals').value.length != 0 ){
+																			if(a.length != 0)print('P<sub>'+pr+'</sub>: '+p(a,parseInt(pr)));
+																			if(groups.length != 0 ){
 																			var newa = [];
 																			var table = g('displayIntervals');
 																			var gs = table.getElementsByTagName('tr');
@@ -48,16 +48,26 @@ function updateTables(){
 	a = newa;
 	setMids();
 }
+function sieve(arr){
+	var na = [];
+	for(var i = 0;i<arr.length;i++){
+		s = (''+arr[i]).trim();
+		if(s != '')na.push(s);
+	}
+	return na;
+}
 function handleData(){
 	clearTable();
 	iClearTable();
 	g('displayData').innerHTML += '<tr><td>Item</td><td>Frequency</td><td>Delete Item</td></tr>';
 	g('displayIntervals').innerHTML += '<tr><td>Interval</td><td>Frequency</td><td>Class Midpoint</td><td>Frequency x Class Midpoint<td>Delete Interval</td></tr>';
-	a = g('ui').value.split(' ');
+	a = sieve(g('ui').value.split(' '));
+	var na = [];
 	if(g('intervals').value.length != 0 ){
-	var intervals = g('intervals').value.replace(/\r\n/g, "\n").split("\n");
+	var intervals = sieve(g('intervals').value.replace(/\r\n/g, "\n").split("\n"));
 	groups = [];
-	for(var i = 0;i<intervals.length;i++)groups.push(intervals[i].split(' ') );
+	for(var i = 0;i<intervals.length;i++)if(intervals[i].length != 0)groups.push(intervals[i].split(' ') );
+	if(groups.length != 0){
 	for(gr = 0;gr<groups.length;gr++){
 		itable(groups[gr][0],groups[gr][1]);
 	}
@@ -65,10 +75,10 @@ function handleData(){
 		gr = groups[i];
 		setFreqX(gr.join(' '),countC(a,gr[0],gr[1]));
 		setCm(gr.join(' '));
-	}}
+	}}}
+	if(a.length != 0){
 	a.sort(compareNumbers);
 	seen = [];
-	if(g('ui').value.length != 0 ){
 	for(var i = 0; i < a.length;i++){
 		if(count(seen,a[i]) == 0){
 			table(a[i]);
@@ -334,4 +344,10 @@ function mode(d){
 function compareNumbers(a, b)
 {
     return a - b;
+
+}
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
 }
