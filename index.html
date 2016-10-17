@@ -1,32 +1,54 @@
 <html>
 <head>
 <style>
+button{
+	background:black;
+	color:red;
+	border-top-left-radius:10%;
+	border-bottom-radius:50%;
+}
+input{
+text-align:center;
+	background:lightgrey;
+	color:darkgreen;
+}
+textarea{
+	background:lightgrey;
+	color:darkgreen;
+}
 #title{
 	font-size:50pt;
+	
 }
 table{
-	border: 1px solid white;
+	color:darkorange;
+	background:blue;
+	border: 1px solid darkgreen;
 	cell-spacing:0;
 }
 table td{
+	background:black;
 	margin:0;
 	padding:0;
-	border: 1px solid white;
+	border: 1px solid black;
 	text-align:center;
 }
 .del{
-	color:red;
-	background:grey;
+	color:black;
+	background:white;
 }
 body{
 	color:white;
-	background:black;
+	background-image:url('backgrounds/math.jpg');
+	background-size: 100% 100%;
+    background-repeat: no-repeat;
 	font-family: "Times New Roman", Times, serif;
 }
 #title{
 	font-size:50pt;
 }
 #output{
+	background:black;
 	border:5px solid green;
 	border-top-right-radius:10px;
 	border-bottom-left-radius:50px;
@@ -51,7 +73,7 @@ Datatype<br>
 <input name='dt' type='radio'/>Discrete(Whole Numbers)<br>
 <br>
 Enter a space seperated list of of data<br>
-<textarea id='ui'></textarea><br>
+<textarea id='ui'></textarea><br><br>
 <button id='analyse'>Capture Data</button><br>
 Frequency table of raw data
 <table id='displayData'></table><br>
@@ -59,7 +81,7 @@ Frequency table of classed(grouped) data
 <table id='displayIntervals'></table>
 Optional Percentile(Choose "calculate percentile" to use this)<input id='percentile' size=8/>
 <br>
-<h2>Output</h2><button id='gout'>Analyse Grouped Data</button><button id='outit'>Analyse Data</button><button id='percentilec'>Calculate percentile(input above)</button>
+<h2>Output</h2><button id='gout'>Analyse Grouped Data</button><button id='outit'>Analyse Data</button><button id='percentilec'>Calculate percentile(input above)</button><br><br>
 <center><div id='output'></div></center>
 </body>
 </html>
