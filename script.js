@@ -51,7 +51,7 @@ function updateTables(){
 function sieve(arr){
 	var na = [];
 	for(var i = 0;i<arr.length;i++){
-		s = (''+arr[i]).trim();
+		s = (''+arr[i]).trim().replace(',' ,'');
 		if(s != '')na.push(s);
 	}
 	return na;
@@ -61,7 +61,7 @@ function handleData(){
 	iClearTable();
 	g('displayData').innerHTML += '<tr><td>Item</td><td>Frequency</td><td>Delete Item</td></tr>';
 	g('displayIntervals').innerHTML += '<tr><td>Interval</td><td>Frequency</td><td>Class Midpoint</td><td>Frequency x Class Midpoint<td>Delete Interval</td></tr>';
-	a = sieve(g('ui').value.split(' '));
+	a = sieve(g('ui').value.replace('\n',' ').split(' '));
 	var na = [];
 	if(g('intervals').value.length != 0 ){
 	var intervals = sieve(g('intervals').value.replace(/\r\n/g, "\n").split("\n"));
